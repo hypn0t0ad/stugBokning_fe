@@ -112,15 +112,12 @@ export default {
         return;
       }
       try {
-        console.log("Input from-date: " + this.fromDate + ". And input until-date: " + this.untilDate);
-        console.log("The cabin ID: " + this.cabin.id);
         this.bookingMessage = 'Booking in progress...';
         const response = await api.post('/book', {
           id: this.$route.params.id,
           start: this.fromDate,
           until: this.untilDate,
         });
-        console.log("Booking successful", response.data);
         alert("The cabin " + response.data.cabin.name + " has been booked successfully the dates: " + response.data.bookedStart + " to: " + response.data.bookedUntil);
         this.$router.push('/');
       }catch(error){

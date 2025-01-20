@@ -3,8 +3,8 @@
     <h2>Admin Login</h2>
     <form @submit.prevent="login">
       <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required />
+        <label for="username">Username:</label>
+        <input type="text" id="username" v-model="username" required />
       </div>
       <div>
         <label for="password">Password:</label>
@@ -22,7 +22,7 @@ import adminApi from '../services/adminApi';
 export default {
   data() {
     return {
-      email: '',
+      username: '',
       password: '',
       error: null,
     };
@@ -30,10 +30,12 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await adminApi.post('/admin/login', {
-          email: this.email,
+        console.log("The username and password: " + this.username, this.password);
+        const response = await adminApi.post('/login', {
+          username: this.username,
           password: this.password,
         });
+        console.log("Respons från server: " + response)
         localStorage.setItem('adminToken', response.data.token);
         this.$router.push('/admin');
       } catch (error) {
