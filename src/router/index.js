@@ -17,10 +17,9 @@ const routes = [
         component: AdminLoginForm,
     },
     {
-        path: '/admin',
+        path: '/admin/view',
         name: 'admin',
         component: AdminView,
-        meta: { requiresAdminAuth: true }
     },
     {
         path: '/cabins/:id',
@@ -33,20 +32,5 @@ const router = createRouter({
     history: createWebHistory(''),
     routes,
 });
-
-router.beforeEach((to, from, next) => {
-    const requiresAdminAuth = to.matched.some(record => record.meta.requiresAdminAuth);
-    const isLoggedIn = !!localStorage.getItem('adminToken') && !!localStorage.getItem('adminRole');
-    const isAdmin = localStorage.getItem('adminRole') == 'ADMIN'
-
-    if(requiresAdminAuth && !isLoggedIn){
-        next('/admin/login')
-    } else if (requiresAdminAuth && !isAdmin) {
-        next('/');
-    } else {
-        next();
-    }
-});
-
 
 export default router;

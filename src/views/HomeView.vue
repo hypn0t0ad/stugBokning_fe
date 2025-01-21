@@ -39,7 +39,6 @@ export default {
       try{
         const response = await api.get('/all');
         this.cabins = response.data;
-        console.log(response)
       } catch (error){
         this.error = 'Failed to load cabins. Please try again later.';
         console.error("API error", error);

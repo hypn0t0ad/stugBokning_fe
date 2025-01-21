@@ -30,14 +30,18 @@ export default {
   methods: {
     async login() {
       try {
-        console.log("The username and password: " + this.username, this.password);
-        const response = await adminApi.post('/login', {
-          username: this.username,
-          password: this.password,
+        const formData = new FormData();
+        formData.append('username', this.username); // Append username to the form data
+        formData.append('password', this.password); // Append password to the form data
+
+        const response = await adminApi.post('/login', formData,{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
         });
-        console.log("Respons från server: " + response)
-        localStorage.setItem('adminToken', response.data.token);
-        this.$router.push('/admin');
+        console.log("The server response: " + response)
+        localStorage.setItem('adminRole', 'ADMIN');
+        this.$router.push('/');
       } catch (error) {
         this.error = 'Invalid credentials. Please try again';
         console.error('API error', error);

@@ -1,106 +1,62 @@
 <template>
   <div class="admin-dashboard">
     <h1>Admin Dashboard</h1>
-    <button @click="showAddCabinForm = true">Add Cabin</button>
-    <div v-if="showAddCabinForm">
-      <AddCabinForm @cabin-added="fetchCabins; showAddCabinForm=false"/>
-    </div>
-    <h2>Cabin List</h2>
-    <div v-if="cabins.length > 0">
-      <div v-for="cabin in cabins" :key="cabin.id" class="cabin-row">
-        <p>{{cabin.name}}</p>
-        <div class="buttons">
-          <button @click="showEditForm(cabin)">Edit</button>
-          <button @click="deleteCabin(cabin.id)">Delete</button>
-        </div>
-        <div v-if="editCabinId === cabin.id">
-          <EditCabinForm :cabin="cabin" @cabin-updated="fetchCabins; editCabinId = null"/>
-        </div>
+    <h2>Bookings</h2>
+    <div v-if="bookings.length > 0">
+      <div v-for="booking in bookings" :key="booking.cabinModel.id" class="booking-row">
+        <p>Booking Id: {{booking.id}}</p>
+        <p>Cabin Id: {{booking.cabinId}}</p>
+        <p>Start Date: {{formatDate(booking.startDate)}}</p>
+        <p>End Date: {{formatDate(booking.endDate)}}</p>
       </div>
     </div>
-    <div v-else>
-      <p v-if="loadingCabins">Loading cabins...</p>
-      <p v-if="error">{{ error }}</p>
-    </div>
-
-    <h2>Bookings</h2>
-    <BookingList :bookings="bookings"/>
-    <div v-if="loadingBookings">Loading bookings...</div>
+    <p v-else>No Bookings available</p>
+    <div v-if="loading">Loading bookings...</div>
+    <p v-if="error">{{error}}</p>
     <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
 import adminApi from '../services/adminApi';
-import AddCabinForm from './AddCabinForm.vue'
-import EditCabinForm from './EditCabinForm.vue'
-import BookingList from './BookingList.vue'
-
 
 export default {
-  components:{
-    AddCabinForm,
-    EditCabinForm,
-    BookingList
-  },
   data() {
     return {
-      cabins: [],
-      bookings:[],
-      loadingCabins: false,
-      error: null,
-      showAddCabinForm: false,
-      editCabinId: null,
-      loadingBookings: false
+      bookings: [],
+      loading: false,
+      error: null
     };
   },
+  mounted() {
+    this.fetchBookings();
+  },
   methods: {
-    async fetchCabins() {
-      this.loadingCabins = true;
-      this.error = null;
-      try {
-        const response = await adminApi.get('/admin/cabins');
-        this.cabins = response.data;
-      } catch (error) {
-        this.error = 'Failed to load cabins. Please try again later.';
-        console.error('API error', error);
-      } finally {
-        this.loadingCabins = false;
-      }
+    formatDate(dateString){
+      return new Date(dateString).toLocaleDateString();
     },
     async fetchBookings() {
-      this.loadingBookings = true;
-      try{
-        const response = await adminApi.get('/admin/bookings');
-        this.bookings = response.data
-      }catch(error){
-        console.error("API error", error);
-      }finally{
-        this.loadingBookings = false;
-      }
-    },
-    showEditForm(cabin) {
-      this.editCabinId = cabin.id;
-    },
-    async deleteCabin(id) {
+      this.loading = true;
       try {
-        if(confirm('Are you sure you want to delete this cabin?')){
-          await adminApi.delete(`/admin/cabins/${id}`);
-          this.fetchCabins(); // Refresh cabin list after deletion
-        }
+        const response = await adminApi.get('/bookings', {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        console.log(response);
+        this.bookings = response.data;
       } catch (error) {
-        console.error('Error deleting cabin', error);
-        alert('Failed to delete cabin. Please try again.');
+        console.error('Error fetching bookings', error)
+        this.error = 'Failed to load bookings. Please try again later.';
+      } finally {
+        this.loading = false;
       }
     },
     logout(){
       localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRole')
       this.$router.push('/admin/login')
     }
-  },
-  mounted() {
-    this.fetchCabins();
-    this.fetchBookings();
   }
 };
 </script>
@@ -108,16 +64,11 @@ export default {
 .admin-dashboard{
   padding: 20px;
 }
-.cabin-row{
+.booking-row{
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 10px;
   border-bottom: 1px solid #eee;
-}
-.buttons {
-  display: flex;
-  gap: 10px;
 }
 h2 {
   margin-top: 20px;

@@ -1,29 +1,17 @@
 # stugbokning_fe
+Pretty lightweight web-app for cabin-booking's. 
+The main page show avaible cabin's, and if you click a cabin, 
+you'll be able to chose which dates you want to book. 
+You can only choose avaible dates. The unavaible dates are greyed out, and not able to pick
 
-This template should help get you started developing with Vue 3 in Vite.
+There's also a ADMIN-role preloaded in the database.
+username: admin
+password: admin
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
+As a logged in admin, you can see all the bookings. 
 ## Project Setup
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```

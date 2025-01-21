@@ -2,8 +2,8 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link to="/admin" v-if="isAdminLoggedIn">Admin Dashboard</router-link>
-      <router-link to="/admin/login" v-if="!isAdminLoggedIn">Admin Login</router-link>
+      <router-link to="/admin/view" v-if="isAdminLoggedIn">Admin Dashboard</router-link>
+      <router-link to="/admin/login">Admin Login</router-link>
     </nav>
     <router-view />
   </div>
@@ -13,7 +13,7 @@
 export default {
   computed: {
     isAdminLoggedIn(){
-      return !!localStorage.getItem('adminToken') && !!localStorage.getItem('adminRole');
+      return !!localStorage.getItem('adminRole');
     }
   }
 };
