@@ -1,13 +1,12 @@
 <template>
   <div class="admin-dashboard">
-    <h1>Admin Dashboard</h1>
+    <h1>Admin Page</h1>
     <h2>Bookings</h2>
     <div v-if="bookings.length > 0">
       <div v-for="booking in bookings" :key="booking.cabinModel.id" class="booking-row">
-        <p>Booking Id: {{booking.id}}</p>
-        <p>Cabin Id: {{booking.cabinId}}</p>
-        <p>Start Date: {{formatDate(booking.startDate)}}</p>
-        <p>End Date: {{formatDate(booking.endDate)}}</p>
+        <p>Cabin name: {{booking.cabinModel.name}}</p>
+        <p>Start Date: {{formatDate(booking.start)}}</p>
+        <p>End Date: {{formatDate(booking.until)}}</p>
       </div>
     </div>
     <p v-else>No Bookings available</p>
@@ -43,7 +42,7 @@ export default {
             'Content-Type': 'application/json',
           }
         });
-        console.log(response);
+        console.log(response.data);
         this.bookings = response.data;
       } catch (error) {
         console.error('Error fetching bookings', error)

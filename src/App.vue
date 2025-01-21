@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link to="/admin/view" v-if="isAdminLoggedIn">Admin Dashboard</router-link>
+      <router-link to="/admin/view" v-if="isAdminLoggedIn">Admin Page</router-link>
       <router-link to="/admin/login">Admin Login</router-link>
     </nav>
     <router-view />
@@ -38,7 +38,4 @@ nav a {
   margin: 0 15px;
 }
 
-nav a.router-link-exact-active {
-  color: #007bff;
-}
 </style>
