@@ -12,7 +12,7 @@
     <p v-else>No Bookings available</p>
     <div v-if="loading">Loading bookings...</div>
     <p v-if="error">{{error}}</p>
-    <button @click="logout">Logout</button>
+    <button @click="logout" type="submit">Logout</button>
   </div>
 </template>
 
@@ -42,7 +42,6 @@ export default {
             'Content-Type': 'application/json',
           }
         });
-        console.log(response.data);
         this.bookings = response.data;
       } catch (error) {
         console.error('Error fetching bookings', error)
@@ -51,10 +50,14 @@ export default {
         this.loading = false;
       }
     },
-    logout(){
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminRole')
-      this.$router.push('/admin/login')
+    async logout() {
+      try {
+        await adminApi.post('/logout');
+        document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        this.$router.push('/');
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
     }
   }
 };

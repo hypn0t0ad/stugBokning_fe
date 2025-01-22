@@ -2,7 +2,7 @@
   <div class="cabin-card">
     <h3>{{ cabin.name }}</h3>
     <p>Capacity: {{ cabin.size }}</p>
-    <p>Price: {{ cabin.price }}Crowns per night</p>
+    <p>Price: {{ cabin.price }}Kr per night</p>
     <router-link :to="`/cabins/${cabin.id}`" class="view-button">View Dates</router-link>
   </div>
 </template>
@@ -28,13 +28,6 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.cabin-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
 .view-button {
   display: inline-block;
   padding: 8px 15px;

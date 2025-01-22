@@ -2,7 +2,7 @@
   <div v-if="cabin" class="cabin-details">
     <h2>{{ cabin.name }}</h2>
     <p>Capacity: {{ cabin.size }}</p>
-    <p>Price: ${{ cabin.price }}Kr per night</p>
+    <p>Price: {{ cabin.price }}Kr per night</p>
 
     <div class="date-picker">
       <label for="fromDate">From Date:</label>
@@ -24,7 +24,7 @@
       <p>Selected dates:</p>
       <p>From: {{ formatDate(fromDate) }}</p>
       <p>Until: {{ formatDate(untilDate) }}</p>
-      <button @click="bookCabin" :disabled="!validRange">Book Cabin</button>
+      <button @click="bookCabin" :disabled="!validRange" class="book-button">Book Cabin</button>
       <p v-if="bookingMessage">{{ bookingMessage }}</p>
       <p v-if="!validRange" class="error">Please pick a valid range without unavailable dates inbetween</p>
     </div>
@@ -140,14 +140,6 @@ export default {
   border-radius: 8px;
 }
 
-.detail-image {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-
 .date-picker {
   display: flex;
   flex-direction: column;
@@ -161,5 +153,16 @@ export default {
 .date-range{
   margin-top: 10px;
   text-align: center;
+}
+
+.book-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
 }
 </style>

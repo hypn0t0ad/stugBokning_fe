@@ -37,11 +37,11 @@ export default {
         const response = await adminApi.post('/login', formData,{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
-          }
+          },
+          withCredentials: true
         });
-        console.log("The server response: " + response)
-        localStorage.setItem('adminRole', 'ADMIN');
-        this.$router.push('/');
+        // localStorage.setItem('adminRole', 'ADMIN')
+        // this.$router.push('/')
       } catch (error) {
         this.error = 'Invalid credentials. Please try again';
         console.error('API error', error);
